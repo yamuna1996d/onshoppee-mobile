@@ -6,10 +6,10 @@ public class Users {
 
     }
 
-    public Users(String name, String password, String phone) {
+    public Users(String name, String password) {
         this.name = name;
         this.password = password;
-        this.phone = phone;
+
     }
 
     public String getName() {

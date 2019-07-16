@@ -5,11 +5,13 @@ import android.os.Bundle;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
+//import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.onshop.yamuna.onshoppee.Interfacs.ItemClickListener;
 import com.onshop.yamuna.onshoppee.Models.Category;
+import com.onshop.yamuna.onshoppee.Models.Order;
 import com.onshop.yamuna.onshoppee.ViewHolder.MenuViewHolder;
 import com.squareup.picasso.Picasso;
 
@@ -30,7 +32,7 @@ import android.widget.Toast;
 
 public class Homeview extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-private DatabaseReference category;
+private DatabaseReference categor;
 private RecyclerView recyclerView;
 FirebaseDatabase database;
 
@@ -49,7 +51,7 @@ RecyclerView.LayoutManager layoutManager;
         //init firebase
 
         database=FirebaseDatabase.getInstance();
-        category=database.getReference("Category");
+        categor=database.getReference("Category");
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -61,30 +63,75 @@ RecyclerView.LayoutManager layoutManager;
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
          loadMenu();
     }
 
-    private void loadMenu() {
-        final FirebaseRecyclerAdapter<Category,MenuViewHolder>adapter=new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class,R.layout.card,MenuViewHolder.class,category) {
-            @Override
-            protected void populateViewHolder(MenuViewHolder menuViewHolder, Category category, int i) {
-                menuViewHolder.textmessage.setText(category.getName());
-                Picasso.with(getBaseContext()).load(category.getImage())
-                        .into(menuViewHolder.imageview);
-                final Category clickitem=category;
-              menuViewHolder.setItemClickListener(new ItemClickListener() {
-                  @Override
-                  public void onClick(View view, int position, boolean isLongClick) {
-                      Toast.makeText(Homeview.this,""+clickitem.getName(),Toast.LENGTH_SHORT).show();
-                      Intent foodDetails=new Intent(Homeview.this,FoodDetails.class);
-                      foodDetails.putExtra("SpiceName",getRef(position).getKey());
-                      startActivity(foodDetails);
-                  }
-              });
-            }
-        };
-        recyclerView.setAdapter(adapter);
-    }
+
+
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//
+//        final FirebaseRecyclerOptions<Category> options=new FirebaseRecyclerOptions
+//                .Builder<Category>().setQuery(categor,Category.class).build();
+//        FirebaseRecyclerAdapter<Category,MenuViewHolder>adapter=new FirebaseRecyclerAdapter<Category, MenuViewHolder>(options) {
+//            @Override
+//            protected void onBindViewHolder(@NonNull MenuViewHolder menuViewHolder, int i, @NonNull final Category category) {
+//                menuViewHolder.textmessage.setText(category.getName());
+//
+////                Picasso.with(getBaseContext()).load(category.getImage())
+////                        .into(menuViewHolder.imageview);
+//                final Category clickitem=category;
+//                menuViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Toast.makeText(Homeview.this,""+clickitem.getName(),Toast.LENGTH_SHORT).show();
+//                        Intent foodDetails=new Intent(Homeview.this,FoodDetails.class);
+//                        foodDetails.putExtra("SpiceName",category.getName());
+//                        startActivity(foodDetails);
+//                    }
+//                });
+//            }
+
+//            @NonNull
+//            @Override
+//            public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//                return null;
+//            }
+//
+//        };
+//        recyclerView.setAdapter(adapter);
+//    }
+private void loadMenu() {
+    FirebaseRecyclerAdapter<Category, MenuViewHolder> adapter =
+            new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.card, MenuViewHolder.class, categor) {
+
+                @Override
+                protected void populateViewHolder(MenuViewHolder menuViewHolder, Category category, int i) {
+                    menuViewHolder.textmessage.setText(category.getName());
+                    Picasso.with(getBaseContext()).load(category.getImage())
+                            .into(menuViewHolder.imageview);
+                    final Category clickitem = category;
+                    menuViewHolder.setItemClickListener(new ItemClickListener() {
+                        @Override
+                        public void onClick(View view, int position, boolean isLongClick) {
+                            Toast.makeText(Homeview.this, "" + clickitem.getName(), Toast.LENGTH_SHORT).show();
+                            Intent foodDetails = new Intent(Homeview.this, FoodDetails.class);
+                            foodDetails.putExtra("SpiceName", getRef(position).getKey());
+                            startActivity(foodDetails);
+                        }
+                    });
+
+                }
+
+            };
+    recyclerView.setAdapter(adapter);
+}
+
+
+
 
 
     @Override
@@ -126,7 +173,9 @@ RecyclerView.LayoutManager layoutManager;
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Intent cartIntent=new Intent(Homeview.this,Carts.class);
+            startActivity(cartIntent);
+
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

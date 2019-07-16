@@ -29,7 +29,9 @@
             android:name=".Homeview"
             android:label="@string/title_activity_homeview"
             android:theme="@style/AppTheme" />
-        <activity android:name=".FoodDetails"></activity>
+        <activity android:name=".FoodDetails" />
+        <activity android:name=".Cart" />
+        <activity android:name=".Carts"></activity>
     </application>
 
 </manifest>
