@@ -85,9 +85,9 @@ Button b1,b2;
                             Toast.makeText(onshoppe.this, "Please wait, you are already logged in...", Toast.LENGTH_SHORT).show();
                             loadingBar.dismiss();
 
-//                            Intent intent = new Intent(onshoppe.this, Home.class);
-//                            Prevalent.currentonlineUser = usersData;
-//                            startActivity(intent);
+                            Intent intent = new Intent(onshoppe.this, Homeview.class);
+                            Prevalent.currentonlineUser = usersData;
+                            startActivity(intent);
                         }
                         else
                         {

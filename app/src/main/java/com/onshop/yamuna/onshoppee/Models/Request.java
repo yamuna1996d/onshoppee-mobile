@@ -15,7 +15,7 @@ public class Request {
         this.name = name;
         this.address = address;
         this.total = total;
-        this.status = "0";    //default 0 
+        this.status = "0";    //default 0
         Spices = spices;
     }
 

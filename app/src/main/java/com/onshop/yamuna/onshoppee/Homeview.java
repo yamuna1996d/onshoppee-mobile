@@ -181,7 +181,8 @@ private void loadMenu() {
             startActivity(cartIntent);
 
         } else if (id == R.id.nav_slideshow) {
-
+            Intent logoutin=new Intent(Homeview.this,Home.class);
+            startActivity(logoutin);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
