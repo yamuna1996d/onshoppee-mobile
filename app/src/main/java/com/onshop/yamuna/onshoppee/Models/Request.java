@@ -3,10 +3,11 @@ package com.onshop.yamuna.onshoppee.Models;
 import java.util.List;
 
 public class Request {
-    public String phone,name,address,total;
+    public String phone,name,address,total,status;
     private List<Order>Spices;
 
-    public Request(String phone, String name, List<Order> cart) {
+
+    public Request() {
     }
 
     public Request(String phone, String name, String address, String total, List<Order> spices) {
@@ -14,7 +15,16 @@ public class Request {
         this.name = name;
         this.address = address;
         this.total = total;
+        this.status = "0";    //default 0 
         Spices = spices;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getPhone() {

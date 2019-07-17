@@ -112,8 +112,7 @@ CartViewHolder.CartAdapter adapter;
                          txtotal.getText().toString(),
                         cart
                 );
-                requests.child(String.valueOf(System.currentTimeMillis())).child(Prevalent.currentonlineUser.getPhone())
-                        .child(Prevalent.currentonlineUser.getName())
+                requests.child(String.valueOf(System.currentTimeMillis()))
                        .setValue(requestss);
 
                 new Database(getBaseContext()).cleanCart();

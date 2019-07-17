@@ -177,6 +177,8 @@ private void loadMenu() {
             startActivity(cartIntent);
 
         } else if (id == R.id.nav_gallery) {
+            Intent cartIntent=new Intent(Homeview.this,Orderstatus.class);
+            startActivity(cartIntent);
 
         } else if (id == R.id.nav_slideshow) {
 

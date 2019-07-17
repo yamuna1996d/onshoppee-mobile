@@ -31,7 +31,8 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".FoodDetails" />
         <activity android:name=".Cart" />
-        <activity android:name=".Carts"></activity>
+        <activity android:name=".Carts" />
+        <activity android:name=".Orderstatus"></activity>
     </application>
 
 </manifest>
