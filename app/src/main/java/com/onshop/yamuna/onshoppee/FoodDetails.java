@@ -37,7 +37,7 @@ ImageView spiceImage;
 CollapsingToolbarLayout collapsingToolbarLayout;
 FloatingActionButton btncart;
 ElegantNumberButton numberButton;
-String spiceName="";
+String spicename="";
 //String num,s2,res;
 //int nu,s1,n3;
 FirebaseDatabase database;
@@ -73,7 +73,7 @@ Spices currentSpice;
             @Override
             public void onClick(View v) {
                 new Database(getBaseContext()).addToCart(new Order(
-                        spiceName,currentSpice.getName(),numberButton.getNumber(),
+                        spicename,currentSpice.getName(),numberButton.getNumber(),
                         currentSpice.getPrice()
                 ));
                 Toast.makeText(FoodDetails.this,"Added to Cart",Toast.LENGTH_SHORT).show();
@@ -90,10 +90,10 @@ Spices currentSpice;
         //get data from intent
 
        if (getIntent()!=null){
-            spiceName=getIntent().getStringExtra("SpiceName");
+            spicename=getIntent().getStringExtra("SpiceName");
 
-            if (!spiceName.isEmpty()){
-                getSpices(spiceName);
+            if (!spicename.isEmpty()){
+                getSpices(spicename);
             }
 }
     }
