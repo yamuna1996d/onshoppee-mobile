@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.onshop.yamuna.onshoppee.Interfacs.ItemClickListener;
 import com.onshop.yamuna.onshoppee.Models.Category;
 import com.onshop.yamuna.onshoppee.Models.Order;
+import com.onshop.yamuna.onshoppee.Service.ListenOrder;
 import com.onshop.yamuna.onshoppee.ViewHolder.MenuViewHolder;
 import com.squareup.picasso.Picasso;
 
@@ -65,6 +66,9 @@ RecyclerView.LayoutManager layoutManager;
 
 
          loadMenu();
+
+         Intent service=new Intent(Homeview.this,ListenOrder.class);
+         startService(service);
     }
 
 

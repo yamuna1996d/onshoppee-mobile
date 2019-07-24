@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.common.internal.service.Common;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.onshop.yamuna.onshoppee.Models.Order;
@@ -52,7 +53,7 @@ public class Orderstatus extends AppCompatActivity {
             @Override
             protected void populateViewHolder(OrderViewHolder viewHolder, Request model, int position) {
                 viewHolder.txtid.setText(adapter.getRef(position).getKey());
-                viewHolder.txtstat.setText(convertCodeToStatus(model.getStatus()));
+                viewHolder.txtstat.setText(Prevalent.convertCodeToStatus(model.getStatus()));
                 viewHolder.txtaddress.setText(model.getAddress());
                 viewHolder.txtphone.setText(model.getPhone());
 
@@ -62,15 +63,6 @@ public class Orderstatus extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private String convertCodeToStatus(String status) {
-        if (status.equals("0")) {
-            return "Placed";
-        } else if (status.equals("1")) {
-            return "On my way";
-        } else {
-            return "Shipped";
 
-        }
-    }
 
 }

@@ -31,7 +31,12 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".FoodDetails" />
         <activity android:name=".Carts" />
-        <activity android:name=".Orderstatus"></activity>
+        <activity android:name=".Orderstatus" />
+
+        <service
+            android:name=".Service.ListenOrder"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
