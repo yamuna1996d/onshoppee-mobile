@@ -16,4 +16,5 @@ public class Prevalent {
 
         }
     }
+    public static final String DELETE="Delete";
 }

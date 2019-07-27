@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -65,7 +66,10 @@ CartViewHolder.CartAdapter adapter;
         orderplace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (cart.size()> 0)
                 showAlertDialoge();
+                else
+                    Toast.makeText(Carts.this,"Your Cart is empty !!!",Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -77,6 +81,7 @@ CartViewHolder.CartAdapter adapter;
 
       cart = new Database(this).getCarts();
        adapter = new CartViewHolder.CartAdapter(cart,this);
+       adapter.notifyDataSetChanged();
        recyclerView.setAdapter(adapter);
 
         //Calculate total price
@@ -84,9 +89,25 @@ CartViewHolder.CartAdapter adapter;
         for (Order order : cart){
             totals += (Integer.parseInt(order.getPrice()))*(Integer.parseInt(order.getQuantity()));
         }
-        Locale locale = new Locale("en", "INDIA");
+        Locale locale = new Locale("malayalam", "INDIA");
         NumberFormat fmt = NumberFormat.getCurrencyInstance();
         txtotal.setText(fmt.format(totals));
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getTitle().equals(Prevalent.DELETE))
+            deleteCart(item.getOrder());
+        return true;
+    }
+
+    private void deleteCart(int position) {
+        cart.remove(position);
+        new Database(this).cleanCart();
+        for (Order item:cart)
+            new Database(this).addToCart(item);
+
+        loadSpicelist();
     }
 
     private void showAlertDialoge() {
