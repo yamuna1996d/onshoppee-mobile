@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,31 +18,40 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 //import com.onshop.yamuna.onshoppee.Database.Database;
 import com.onshop.yamuna.onshoppee.Databases.Database;
 import com.onshop.yamuna.onshoppee.Models.Category;
 import com.onshop.yamuna.onshoppee.Models.Order;
+import com.onshop.yamuna.onshoppee.Models.Rating;
 import com.onshop.yamuna.onshoppee.Models.Spices;
 import com.onshop.yamuna.onshoppee.Prevalent.Prevalent;
 import com.rey.material.widget.FloatingActionButton;
 import com.squareup.picasso.Picasso;
+import com.stepstone.apprating.AppRatingDialog;
+import com.stepstone.apprating.listener.RatingDialogListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class FoodDetails extends AppCompatActivity {
+public class FoodDetails extends AppCompatActivity implements RatingDialogListener {
 TextView spicenam,spicepric,spicetotal;
 ImageView spiceImage;
 CollapsingToolbarLayout collapsingToolbarLayout;
-FloatingActionButton btncart;
+FloatingActionButton btncart,btrate;
 ElegantNumberButton numberButton;
+RatingBar ratingBar;
 String spicename="";
 //String num,s2,res;
 //int nu,s1,n3;
 FirebaseDatabase database;
 DatabaseReference spices;
+DatabaseReference ratings;
 Spices currentSpice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +60,13 @@ Spices currentSpice;
 
         database=FirebaseDatabase.getInstance();
         spices=database.getReference("Spice");
+        ratings=database.getReference("Rating");
+
         numberButton=(ElegantNumberButton)findViewById(R.id.numbebutton);
         btncart=(FloatingActionButton)findViewById(R.id.btncart);
+        btrate=(FloatingActionButton)findViewById(R.id.btnrating);
+        ratingBar=(RatingBar)findViewById(R.id.ratingBar);
+
         spicenam=(TextView)findViewById(R.id.spicename);
         spicepric=(TextView)findViewById(R.id.spiceprice);
 //        spicetotal=(TextView)findViewById(R.id.total);
@@ -68,6 +83,12 @@ Spices currentSpice;
 //        res=String.valueOf(n3);
 //        spicetotal.setText(res);
 
+        btrate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRating();
+            }
+        });
 
         btncart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,8 +115,47 @@ Spices currentSpice;
 
             if (!spicename.isEmpty()){
                 getSpices(spicename);
+                getRating(spicename);
             }
 }
+    }
+
+    private void getRating(String spicename) {
+        Query spiceRating=ratings.orderByChild("spiceName").equalTo(spicename);
+        spiceRating.addValueEventListener(new ValueEventListener() {
+            int count=0,sum=0;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postsnapShot:dataSnapshot.getChildren()){
+                    Rating item=postsnapShot.getValue(Rating.class);
+                    sum+=Integer.parseInt(item.getRateValue());
+                    count++;
+                }
+                if (count !=0){
+                    float average=sum/count;
+                    ratingBar.setRating(average);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showRating() {
+        new AppRatingDialog.Builder().setPositiveButtonText("Submit")
+                .setNegativeButtonText("Cancel").setNoteDescriptions(Arrays.asList("Very Bad","Not Bad","Quite Ok","Very Good","Excellent"))
+                .setDefaultRating(1)
+                .setTitle("Rate this Spice").setDescription("Please Select stars and give your Feedback")
+                .setTitleTextColor(R.color.colorAccent).setDescriptionTextColor(R.color.colorPrimary)
+                .setHint("Please write your Comment Here........")
+                .setHintTextColor(R.color.colorAccent).setCommentTextColor(R.color.colorPrimary)
+                .setCommentBackgroundColor(R.color.colorAccent)
+                .setWindowAnimation(R.style.RatinDialogeFadeAnim)
+                .create(FoodDetails.this).show();
     }
 
     private void getSpices(final String spiceName) {
@@ -114,6 +174,43 @@ Spices currentSpice;
 
           }
       });
+    }
+
+    @Override
+    public void onNegativeButtonClicked() {
+
+    }
+
+    @Override
+    public void onNeutralButtonClicked() {
+
+    }
+
+    @Override
+    public void onPositiveButtonClicked(int value, @NotNull String comments) {
+        final Rating rating=new Rating(Prevalent.currentonlineUser.getPhone(),
+                spicename,String.valueOf(value),comments);
+
+        ratings.child(Prevalent.currentonlineUser.getPhone()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(Prevalent.currentonlineUser.getPhone()).exists()){
+                    ratings.child(Prevalent.currentonlineUser.getPhone()).removeValue();
+                    ratings.child(Prevalent.currentonlineUser.getPhone()).setValue(rating);
+                }
+                else {
+                    ratings.child(Prevalent.currentonlineUser.getPhone()).setValue(rating);
+                }
+                Toast.makeText(FoodDetails.this,"Thank u for the Feedback !!!",Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 //    private void addtocar() {

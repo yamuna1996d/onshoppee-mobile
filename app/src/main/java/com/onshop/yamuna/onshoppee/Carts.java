@@ -114,13 +114,12 @@ CartViewHolder.CartAdapter adapter;
         AlertDialog.Builder alertDialog=new AlertDialog.Builder(Carts.this);
         alertDialog.setTitle("One more step !");
         alertDialog.setMessage("Enter your Address");
-        final EditText edtAddress=new EditText(Carts.this);
-        LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
-        edtAddress.setLayoutParams(lp);
-        alertDialog.setView(edtAddress);
+
+        LayoutInflater inflater=this.getLayoutInflater();
+        View orderaddress=inflater.inflate(R.layout.orderaddress_comment,null);
+        EditText edtaddress=(EditText)orderaddress.findViewById(R.id.address);
+        EditText edtcomment=(EditText)orderaddress.findViewById(R.id.comme);
+
         alertDialog.setIcon(R.drawable.nav_cart);
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
@@ -129,7 +128,7 @@ CartViewHolder.CartAdapter adapter;
                 Request requestss = new Request(
                         Prevalent.currentonlineUser.getPhone(),
                         Prevalent.currentonlineUser.getName(),
-                         edtAddress.getText().toString(),
+                         edtaddress.getText().toString(),
                          txtotal.getText().toString(),
                         cart
                 );

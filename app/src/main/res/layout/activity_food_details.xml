@@ -48,6 +48,19 @@
     <com.rey.material.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/btnrating"
+        app:fab_iconSrc="@drawable/ic_star_border_black_24dp"
+        android:backgroundTint="#ffff"
+        android:elevation="10dp"
+        app:layout_anchor="@id/appbarlayout"
+        app:layout_anchorGravity="bottom|right|start"
+
+
+        />
+
+    <com.rey.material.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/btncart"
         app:fab_iconSrc="@drawable/nav_cart"
         android:backgroundTint="#ffff"
@@ -57,6 +70,7 @@
 
 
         />
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedscroll"
         android:layout_width="match_parent"
@@ -127,7 +141,22 @@
                   >
 
               </com.cepheuen.elegantnumberbutton.view.ElegantNumberButton>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <RatingBar
+        android:layout_marginTop="10dp"
+        android:id="@+id/ratingBar"
+        android:outlineAmbientShadowColor="@color/colorAccent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rating="0"
+        android:max="5"
+        android:isIndicator="true"/>
 
+</LinearLayout>
 
 
             </LinearLayout>

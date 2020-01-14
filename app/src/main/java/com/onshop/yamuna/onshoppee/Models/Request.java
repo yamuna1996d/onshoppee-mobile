@@ -3,28 +3,21 @@ package com.onshop.yamuna.onshoppee.Models;
 import java.util.List;
 
 public class Request {
-    public String phone,name,address,total,status;
+    public String phone,name,address,total,status,comment;
     private List<Order>Spices;
 
 
     public Request() {
     }
 
-    public Request(String phone, String name, String address, String total, List<Order> spices) {
+    public Request(String phone, String name, String address, String total, String status, String comment, List<Order> spices) {
         this.phone = phone;
         this.name = name;
         this.address = address;
         this.total = total;
-        this.status = "0";    //default 0
-        Spices = spices;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
         this.status = status;
+        this.comment = comment;
+        Spices = spices;
     }
 
     public String getPhone() {
@@ -57,6 +50,22 @@ public class Request {
 
     public void setTotal(String total) {
         this.total = total;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public List<Order> getSpices() {
